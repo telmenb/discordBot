@@ -15,7 +15,7 @@ async def idea(ctx):
     idea = f'Create a new {random.choice(topics)} that helps with {random.choice(areas)} using {random.choice(languages)}'
     await ctx.send(idea)
 
-@bot.command(name="calc", help="Do a two number calculation")
+@bot.command(name="calc", help="Do a two number calculation") 
 async def calc(ctx, x: float, fn, y: float):
     if fn == '+':
         await ctx.send(x + y)
