@@ -1,34 +1,20 @@
-from discord.ext import commands
-import random, math
+import os, discord
+from dotenv import load_dotenv
 
-bot = commands.Bot(command_prefix='!')
+load_dotenv()
+TOKEN = os.getenv('BOT_TOKEN')
+GUILD = os.getenv('GUILD_NAME')
 
-@bot.command(name="idea", help="Get a random project idea")
-async def idea(ctx):
-    await ctx.send("Ideas are hard")
-    await ctx.send("Let me see if I can help you: ")
+client = discord.Client()
 
-    topics = ['chat bot', 'cli', 'game', 'web bot']
-    areas = ['pet care', 'doing homework', 'deciding a gift']
-    languages = ['python', 'java', 'C++', 'go', 'rust', 'javascript']
+@client.event
+async def on_ready():
+    print(f'{client.user} has connected to Discord')
 
-    idea = f'Create a new {random.choice(topics)} that helps with {random.choice(areas)} using {random.choice(languages)}'
-    await ctx.send(idea)
+@client.event
+async def on_member_join(member):
+    print("new member")
+    await member.create_dm()
+    await member.dm_channel.send(f'Hello {member.name}, Welcome to Orc Pride!')
 
-@bot.command(name="calc", help="Do a two number calculation") 
-async def calc(ctx, x: float, fn, y: float):
-    if fn == '+':
-        await ctx.send(x + y)
-    elif fn == '-':
-        await ctx.send(x - y)
-    elif fn == '*':
-        await ctx.send(x * y)
-    elif fn == '/':
-        await ctx.send(x / y)
-    elif fn == '**':
-        await ctx.send(math.pow(x, y))
-
-with open("BOT_TOKEN.txt", "r") as token_file:
-    TOKEN = token_file.read()
-    print("Token file read")
-    bot.run(TOKEN)
+client.run(TOKEN)
